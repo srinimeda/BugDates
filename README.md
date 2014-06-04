@@ -1,5 +1,5 @@
-EclipseConNA2014
-================
+BugDates
+========
 
-Demo code from my presentation with Georges Saab at EclipseCon NA 2014,
-"New Features in Java SE 8," March 18, 2014.
+A small Java 8 Lambda and JavaFX demo that shows some data analysis
+and charting.
