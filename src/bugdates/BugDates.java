@@ -84,20 +84,26 @@ public class BugDates {
      * bugs on that day.
      */
     public static void generate(QuadConsumer<LocalDate, Long, Long, Long> qc) throws IOException {
-        Map<LocalDate, Long> creations   = loadFile("open-teststabilization.xml", "<created>(.*)</created>");
-        Map<LocalDate, Long> resolutions = loadFile("open-teststabilization.xml", "<resolved>(.*)</resolved>");
+        String filename = System.getProperty("bugdates.filename", "open-teststabilization.xml");
+        String enddate = System.getProperty("bugdates.enddate", "2014-02-22");
+        
+        Map<LocalDate, Long> creations   = loadFile(filename, "<created>(.*)</created>");
+        Map<LocalDate, Long> resolutions = loadFile(filename, "<resolved>(.*)</resolved>");
         
         LocalDate firstDate =
             Stream.concat(creations.keySet().stream(),
                           resolutions.keySet().stream())
                   .min(naturalOrder())
                   .get();
-        LocalDate lastDate = LocalDate.parse("2014-02-22"); // bug data was queried on this day
+        LocalDate lastDate = LocalDate.parse(enddate); // bug data was queried on this day
         long ndays = lastDate.toEpochDay() - firstDate.toEpochDay();
         System.out.printf("Scanning %s to %s (%d days)%n", firstDate, lastDate, ndays);
-        System.out.printf("Number of creations = %d%n", creations.values().stream().mapToLong(Long::longValue).sum());
-        System.out.printf("Number of resolutions = %d%n", resolutions.values().stream().mapToLong(Long::longValue).sum());
-
+        System.out.printf("Number of creations = %d%n",
+                          creations.values().stream().mapToLong(Long::longValue).sum());
+        System.out.printf("Number of resolutions = %d%n",
+                          resolutions.values().stream().mapToLong(Long::longValue).sum());
+        System.out.println("date,created,resolved,net");
+        
         long ncre = 0L;
         long nres = 0L;
         long nnet = 0L;

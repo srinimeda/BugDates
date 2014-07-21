@@ -46,7 +46,7 @@ import java.io.IOException;
  */
 public class GenCSV {
     public static void main(String[] args) throws IOException {
-         BugDates.generate((curdate, ncre, nres, nnet) ->
+        BugDates.generate((curdate, ncre, nres, nnet) ->
             System.out.printf("%s,%d,%d,%d%n", curdate, ncre, nres, nnet));
     }
 }
